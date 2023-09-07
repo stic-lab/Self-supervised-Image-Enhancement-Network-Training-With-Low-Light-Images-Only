@@ -143,16 +143,21 @@ class lowlight_enhance(object):
             train_loss = self.loss_Decom_zhangyu
             saver = self.saver_Decom
 
-        load_model_status, global_step = self.load(saver, ckpt_dir)
-        if load_model_status:
-            iter_num = global_step
-            start_epoch = global_step // numBatch
-            start_step = global_step % numBatch
-            print("[*] Model restore success!")
+            load_model_status, global_step = self.load(saver, ckpt_dir)
+            if load_model_status:
+                iter_num = global_step
+                if numBatch > 0:
+                    start_epoch = global_step // numBatch
+                    start_step = global_step % numBatch
+                else:
+                    print("Number of batch should not be equal 0")
+                print("[*] Model restore success!")
         else:
             iter_num = 0
             start_epoch = 0
             start_step = 0
+            train_op = self.train_op_Decom #use this loss temporary because without train_op set in the case of train_phase is not "Decom", network throw an error
+            train_loss = self.loss_Decom_zhangyu
             print("[*] Not find pretrained model!")
 
         print("[*] Start training for phase %s, with start epoch %d start iter %d : " % (train_phase, start_epoch, iter_num))
