@@ -2,7 +2,7 @@
 import numpy as np
 from PIL import Image
 from pylab import *
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import cv2
 from PIL import ImageFilter
 
